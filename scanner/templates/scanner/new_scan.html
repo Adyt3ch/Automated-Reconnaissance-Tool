@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Initialize Reconnaissance</h2>
+
+<form method="post" id="scanForm" onsubmit="showLoader()">
+    {% csrf_token %}
+    
+    <div class="card">
+        <h3>1. Target Configuration</h3>
+        <label>TARGET IP / DOMAIN:</label>
+        <input type="text" name="target" placeholder="e.g. 192.168.1.5 or scanme.nmap.org" required>
+    </div>
+
+    <div class="card">
+        <h3>2. Select Modules (Flags)</h3>
+        <div style="margin-bottom: 10px;">
+            <input type="checkbox" id="chk_ports" name="scan_modules" value="ports" style="width:auto;">
+            <label for="chk_ports" style="display:inline;"> [P] Port Scanning</label>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <input type="checkbox" id="chk_services" name="scan_modules" value="services" style="width:auto;">
+            <label for="chk_services" style="display:inline;"> [S] Service Detection (Requires Port Scan)</label>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <input type="checkbox" id="chk_headers" name="scan_modules" value="headers" style="width:auto;">
+            <label for="chk_headers" style="display:inline;"> [H] Security Headers</label>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <input type="checkbox" id="chk_dirs" name="scan_modules" value="dirs" style="width:auto;">
+            <label for="chk_dirs" style="display:inline;"> [D] Directory Brute Force</label>
+        </div>
+
+        <hr style="border-color: #333;">
+        
+        <button type="button" onclick="selectAll(true)" style="width: 48%; background: #333;">[+] FULL RECON</button>
+        <button type="button" onclick="selectAll(false)" style="width: 48%; background: #333;">[-] CLEAR ALL</button>
+    </div>
+
+    <button type="submit" style="margin-top: 20px;">>> EXECUTE SELECTED MODULES</button>
+</form>
+
+<div id="loader" class="scan-loader">
+    <p>> PARSING FLAGS...</p>
+    <p>> EXECUTING MODULES...</p>
+    <p>[ PLEASE WAIT ]</p>
+</div>
+
+<script>
+    function selectAll(checked) {
+        const checkboxes = document.getElementsByName('scan_modules');
+        checkboxes.forEach((cb) => cb.checked = checked);
+    }
+
+    function showLoader() {
+        document.getElementById('loader').style.display='block';
+    }
+
+    // Logic: If Service Detection is checked, Port Scan must be checked
+    const chkServices = document.getElementById('chk_services');
+    const chkPorts = document.getElementById('chk_ports');
+
+    chkServices.addEventListener('change', function() {
+        if(this.checked) {
+            chkPorts.checked = true;
+        }
+    });
+</script>
+{% endblock %}

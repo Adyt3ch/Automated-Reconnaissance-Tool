@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Mission Control // Dashboard</h2>
+<p>Select an existing operation or initialize a new scan.</p>
+
+{% if scans %}
+    {% for scan in scans %}
+    <div class="card">
+        <h3>Target: {{ scan.target }}</h3>
+        <p>Timestamp: {{ scan.created_at }}</p>
+        <p>Open Ports: {{ scan.open_ports|length }} | Dirs Found: {{ scan.found_directories|length }}</p>
+        <a href="{% url 'scan_detail' scan.pk %}">>> ACCESS REPORT</a>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No scan data found. Initialize new operation.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'dashboard' %}"><< BACK TO DASHBOARD</a>
+
+<h2>Scan Report // {{ report.target }}</h2>
+
+{% if report.open_ports != None %}
+<div class="card">
+    <h3>1. Port Scanning & Service Detection</h3>
+    {% if report.open_ports %}
+        <table>
+            <tr><th>PORT</th><th>SERVICE BANNER</th></tr>
+            {% for port in report.open_ports %}
+            <tr>
+                <td>{{ port.port }}</td>
+                <td>{{ port.service }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p style="color: #666;">> Scan Complete: No open ports found.</p>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if report.headers_info != None %}
+<div class="card">
+    <h3>2. HTTP Security Headers</h3>
+    <table>
+        <tr><th>HEADER</th><th>STATUS</th></tr>
+        {% for key, val in report.headers_info.items %}
+        <tr>
+            <td>{{ key }}</td>
+            <td {% if val == 'MISSING ❌' %}class="badge-danger"{% endif %}>{{ val }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endif %}
+
+{% if report.found_directories != None %}
+<div class="card">
+    <h3>3. Directory Enumeration</h3>
+    {% if report.found_directories %}
+        <ul>
+        {% for dir in report.found_directories %}
+            <li>> {{ dir }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p style="color: #666;">> Scan Complete: No hidden directories found.</p>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

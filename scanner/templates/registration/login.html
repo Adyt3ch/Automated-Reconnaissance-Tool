@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 0 auto; text-align: center;">
+    <h2>[ ACCESS CONTROL ]</h2>
+    <p>Please authenticate to access the Recon Console.</p>
+    
+    <div class="card">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <button type="submit" style="margin-top: 20px;">>> AUTHENTICATE</button>
+        </form>
+    </div>
+    
+    <p style="margin-top: 20px;">
+        Need an account? <a href="{% url 'register' %}">Initialize User Registration</a>
+    </p>
+</div>
+{% endblock %}
