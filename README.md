@@ -35,7 +35,7 @@ Python · Django · SQLite · Nmap · HTML · CSS
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/yourusername/recon-tool.git
+git clone https://github.com/yourusername/Automated-Reconnaissance-Tool.git
 cd recon-tool
 ```
 
